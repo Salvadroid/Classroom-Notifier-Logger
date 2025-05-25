@@ -1,0 +1,3 @@
+# Classroom Notifier Logger - Memory File
+# This file contains the log entries from the application
+# Format: YYYY-MM-DD HH:mm:ss - Message 

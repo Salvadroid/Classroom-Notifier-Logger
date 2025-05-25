@@ -5,11 +5,11 @@ import org.classroomNotifier.init.LoggerFactory;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class Timer implements Runnable {
+public class LoggerTimer implements Runnable {
     private Integer timeInterval;
     private Runnable runnable;
 
-    public Timer(Integer timeInterval, Runnable runnable) {
+    public LoggerTimer(Integer timeInterval, Runnable runnable) {
         this.runnable = runnable;
         this.timeInterval = timeInterval;
     }

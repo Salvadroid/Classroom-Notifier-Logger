@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import org.classroomNotifier.test.LoggerTimer;
 
 public class SourceLogger implements InformadorDatos, Runnable {
     private String archivosOrigenMaterias;
@@ -20,7 +21,7 @@ public class SourceLogger implements InformadorDatos, Runnable {
     public SourceLogger(String archivosOrigenMaterias){
         this.archivosOrigenMaterias = archivosOrigenMaterias;
         this.observador = new HashSet<>();
-        Timer timer = new Timer(1000, this);
+        LoggerTimer timer = new LoggerTimer(1000, this);
         Thread thread = new Thread(timer);
         thread.start();
     }

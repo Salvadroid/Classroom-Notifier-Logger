@@ -11,10 +11,9 @@ import java.util.Map;
 
 
 public class Main {
+    private static String EXTENSIONS_PATH = "src\\test\\resources\\extensions\\";
+
     public static void main(String[] args) {
-
-        private static String EXTENSIONS_PATH = "src\\test\\resources\\extensions\\";
-
         System.out.println("Initializing application...");
         
         // Initialize logger factory and create logger
@@ -30,10 +29,6 @@ public class Main {
         
         // Set up observer pattern
         application.addObserver(logger);
-        application.addCurrentObservers(logger.getClass().getSimpleName());
-    
-        
-        // Test source logger
-        sourceLogger.logMessage("Test message from SourceLogger");
+        application.addCurrentObservers(logger.getClass().getSimpleName());        
     }
 } 

@@ -1,0 +1,54 @@
+plugins {
+    id 'java'
+}
+
+group = 'org.classroomNotifier'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+allprojects {
+    repositories {
+        maven { url 'https://jitpack.io' }
+    }
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
+dependencies {
+    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    implementation 'com.github.gcajal:ClassRoom-Notifier:us-3'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+jar {
+    manifest {
+        attributes(
+            'Main-Class': 'org.classroomNotifier.test.Main'
+        )
+    }
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
+task copyJars(type: Copy) {
+    from configurations.runtimeClasspath
+    into "$buildDir/libs"
+}
+
+task cleanGeneratedFiles(type: Delete) {
+    delete fileTree(dir: 'src/test/resources').matching {
+        include 'memory.txt'
+    }
+} 

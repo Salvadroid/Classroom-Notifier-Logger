@@ -1,19 +1,19 @@
 package org.classroomNotifier.logger;
 
 // TODO: Replace with your actual application's interface
-import com.example.core.ApplicationInterface;
+import classroom.notifier.implement.Observer;
 
 public class Logger implements Observer {
     private Writer writer;
-    private ApplicationInterface application;
+    private Observer observer;
 
     public Logger(Writer writer) {
         this.writer = writer;
     }
 
-    public void setApplication(ApplicationInterface application) {
-        this.application = application;
-        application.registerObserver(this);
+    public void setApplication(Observer observer) {
+        this.observer = observer;
+        observer.registerObserver(this);
     }
 
     @Override
@@ -22,8 +22,8 @@ public class Logger implements Observer {
     }
 
     public void stop() {
-        if (application != null) {
-            application.removeObserver(this);
+        if (observer != null) {
+            observer.removeObserver(this);
         }
     }
 } 

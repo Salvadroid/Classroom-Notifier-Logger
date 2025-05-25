@@ -9,9 +9,10 @@ public class TimerLogger {
     private Logger logger;
     private Timer timer;
     private static final long PERIOD = 5000; // 5 seconds
+    private static final String MEMORY_PATH = "src/test/resources/memory.txt";
     
     public TimerLogger() {
-        LoggerFactory factory = LoggerFactory.getInstance();
+        LoggerFactory factory = LoggerFactory.getInstance(MEMORY_PATH);
         this.logger = factory.createLogger();
         this.timer = new Timer();
     }

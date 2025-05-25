@@ -22,7 +22,7 @@ public class Writer {
 
     public synchronized void write(String message) {
         String timestamp = LocalDateTime.now().format(formatter);
-        writer.println(timestamp + " - " + message);
+        writer.println("Fecha: " + timestamp + " - " + message);
         writer.flush();
     }
 

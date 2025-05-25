@@ -6,14 +6,16 @@ import org.classroomNotifier.logger.Writer;
 public class LoggerFactory {
     private static LoggerFactory instance;
     private Writer writer;
+    private String memoryPath;
 
-    private LoggerFactory() {
-        this.writer = new Writer("src/test/resources/memory.txt");
+    private LoggerFactory(String memoryPath) {
+        this.memoryPath = memoryPath;
+        this.writer = new Writer(memoryPath);
     }
 
-    public static LoggerFactory getInstance() {
+    public static LoggerFactory getInstance(String memoryPath) {
         if (instance == null) {
-            instance = new LoggerFactory();
+            instance = new LoggerFactory(memoryPath);
         }
         return instance;
     }

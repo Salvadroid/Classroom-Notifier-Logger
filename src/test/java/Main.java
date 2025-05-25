@@ -2,8 +2,8 @@ package org.classroomNotifier.test;
 
 import org.classroomNotifier.init.LoggerFactory;
 import org.classroomNotifier.logger.Logger;
-import classroom.notifier.FactoryClassroom; // TODO: Replace with your actual application factory
-import classroom.notifier.ClassroomNotifier; // TODO: Replace with your actual application interface
+import classroom.notifier.FactoryClassroom;
+import classroom.notifier.ClassroomNotifier;
 
 public class Main {
     public static void main(String[] args) {
@@ -14,7 +14,7 @@ public class Main {
         Logger logger = loggerFactory.createLogger();
 
         // Initialize application factory and create application
-        FactoryClassroom appFactory = new FactoryClassroom(); // TODO: Replace with your actual factory
+        FactoryClassroom appFactory = new FactoryClassroom();
         ClassroomNotifier application = appFactory.createApplication();
         
         // Initialize test loggers

@@ -8,7 +8,7 @@ public class LoggerFactory {
     private Writer writer;
     private String memoryPath;
 
-    private LoggerFactory(String memoryPath) {
+    public LoggerFactory(String memoryPath) {
         this.memoryPath = memoryPath;
         this.writer = new Writer(memoryPath);
     }

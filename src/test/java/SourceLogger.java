@@ -76,4 +76,10 @@ public class SourceLogger implements InformadorDatos, Runnable {
         Leer();
     }
 
+    public void logMessage(String message) {
+        // Simulate sending a message to the Logger
+        System.out.println("Sending message: " + message);
+        // You can add logic here to send the message to the Logger if needed
+    }
+
 }

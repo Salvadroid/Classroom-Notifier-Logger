@@ -12,6 +12,8 @@ public class Logger implements Observer {
 
     @Override
     public void update(Object message) {
+        System.out.println("Logger received message: " + message);
         writer.write(message.toString());
+        writer.close();
     }
 } 

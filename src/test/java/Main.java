@@ -25,10 +25,18 @@ public class Main {
 
         // Initialize application factory and create application
         FactoryClassroom appFactory = new FactoryClassroom();
-        ClassroomNotifier application = appFactory.Inicializar(sourceLogger, EXTENSIONS_PATH);
-        
-        // Set up observer pattern
-        application.addObserver(logger);
-        application.addCurrentObservers(logger.getClass().getSimpleName());        
+        logger.update("Test message from SourceLogger");
+        sourceLogger.logMessage("Test message from SourceLogger");
+        try {
+            ClassroomNotifier application = appFactory.Inicializar(sourceLogger, EXTENSIONS_PATH);
+            // Set up observer pattern
+            application.addObserver(logger);
+            application.addCurrentObservers(logger.getClass().getSimpleName());
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        // Test source logger
+        logger.update("Test message from SourceLogger");
     }
 } 

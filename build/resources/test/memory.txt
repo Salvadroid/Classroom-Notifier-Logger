@@ -1,3 +1,1 @@
-# Classroom Notifier Logger - Memory File
-# This file contains the log entries from the application
-# Format: YYYY-MM-DD HH:mm:ss - Message 
+Fecha: 2025-05-27 16:42:45 - Mensaje de prueba para integración - 2025-05-27T16:42:45.084316

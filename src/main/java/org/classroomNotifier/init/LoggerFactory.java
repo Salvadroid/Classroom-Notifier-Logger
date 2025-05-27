@@ -10,7 +10,7 @@ public class LoggerFactory {
 
     public LoggerFactory(String memoryPath) {
         this.memoryPath = memoryPath;
-        this.writer = new Writer(memoryPath);
+        this.writer = new Writer(this.memoryPath);
     }
 
     public static LoggerFactory getInstance(String memoryPath) {

@@ -1,7 +1,5 @@
 package org.classroomNotifier.logger;
-
-// TODO: Replace with your actual application's interface
-import classroom.notifier.implement.Observer;
+import classroom.notifier.interfaces.Observer;
 
 public class Logger implements Observer {
     private Writer writer;

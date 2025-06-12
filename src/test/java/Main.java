@@ -1,7 +1,8 @@
+import classroom.notifier.aplicacion.ClassroomNotifier;
+import classroom.notifier.inicializacion.FactoryClassroom;
 import org.classroomNotifier.init.LoggerFactory;
 import org.classroomNotifier.logger.Logger;
-import classroom.notifier.FactoryClassroom;
-import classroom.notifier.ClassroomNotifier;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.DisplayName;
@@ -34,7 +35,7 @@ public class Main {
 
         // Inicializar sistema principal
         FactoryClassroom appFactory = new FactoryClassroom();
-        application = appFactory.Inicializar(null, EXTENSIONS_PATH);
+        application = appFactory.crear(null, EXTENSIONS_PATH);
     }
 
     @Test

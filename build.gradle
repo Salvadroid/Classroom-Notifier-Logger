@@ -23,7 +23,7 @@ java {
 dependencies {
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
-    implementation 'com.github.gcajal:ClassRoom-Notifier:e57e3f1241'
+    implementation 'com.github.gcajal:ClassRoom-Notifier:main-SNAPSHOT'
     implementation 'org.json:json:20231013'
 }
 

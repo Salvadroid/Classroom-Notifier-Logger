@@ -71,24 +71,88 @@ public class Main {
     }
 
     @Test
-    @DisplayName("Criterio 2: Integración con sistema existente")
-    void testIntegracionSistema() {
+    @DisplayName("Criterio 2: Logger no registrado como observer (caso negativo)")
+    void testLoggerNoRegistradoComoObserver() {
+        // NO registrar el logger como observador intencionalmente
+        // application.addObserver(logger); <- Esta línea comentada intencionalmente
+        
+        // Obtener contenido inicial del archivo
+        String contenidoInicial = "";
+        try {
+            contenidoInicial = new String(Files.readAllBytes(Paths.get(MEMORY_FILE)));
+        } catch (Exception e) {
+            fail("Error al leer el archivo inicial: " + e.getMessage());
+        }
+        
+        // Enviar una notificación de prueba sin el logger registrado
+        String mensajePrueba = "Mensaje que NO debería registrarse - " + 
+            LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+        
+        // El sistema debería funcionar normalmente aunque el logger no esté registrado
+        assertDoesNotThrow(() -> {
+            application.notifyObservers(mensajePrueba);
+        }, "El sistema debería funcionar normalmente sin el logger registrado");
+        
+        // Esperar un poco para asegurar que no se escriba nada
+        try {
+            Thread.sleep(200);
+        } catch (InterruptedException e) {
+            // Ignorar
+        }
+        
+        // Verificar que el mensaje NO fue registrado
+        try {
+            String contenidoFinal = new String(Files.readAllBytes(Paths.get(MEMORY_FILE)));
+            
+            // El archivo debería permanecer igual (vacío o sin el nuevo mensaje)
+            assertEquals(contenidoInicial, contenidoFinal, 
+                "El contenido del archivo no debería cambiar cuando el logger no está registrado");
+            
+            // Verificar específicamente que el mensaje de prueba no está presente
+            assertFalse(contenidoFinal.contains(mensajePrueba), 
+                "El mensaje no debería estar registrado cuando el logger no es un observer");
+                
+        } catch (Exception e) {
+            fail("Error al verificar que el mensaje no fue registrado: " + e.getMessage());
+        }
+    }
+    
+    @Test
+    @DisplayName("Criterio extra: Integración exitosa con sistema existente")
+    void testIntegracionExitosaSistemaExistente() {
         // Registrar logger como observador
         application.addObserver(logger);
         application.addCurrentObservers(logger.getClass().getSimpleName());
         
         // Enviar una notificación de prueba
-        String mensajePrueba = "Mensaje de prueba para integración - " + 
+        String mensajePrueba = "Se modificó el aula 118 a aula 205 - " + 
             LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
         application.notifyObservers(mensajePrueba);
         
-        // Verificar que el mensaje fue registrado
+        // Esperar un poco para asegurar que el logger haya escrito
+        try {
+            Thread.sleep(200);
+        } catch (InterruptedException e) {
+            // Ignorar
+        }
+        
+        // Verificar que el mensaje fue registrado correctamente
         try {
             String contenido = new String(Files.readAllBytes(Paths.get(MEMORY_FILE)));
-            assertTrue(contenido.contains(mensajePrueba), 
-                "El logger debería haber recibido y registrado la notificación");
+            
+            // Verificar que el archivo no está vacío
+            assertFalse(contenido.isEmpty(), "El archivo debería contener el mensaje registrado");
+            
+            // Verificar que contiene el mensaje
+            assertTrue(contenido.contains("Se modificó el aula 118 a aula 205"), 
+                "El logger debería haber recibido y registrado la notificación de cambio de aula");
+                
+            // Verificar formato del timestamp
+            assertTrue(contenido.matches("^Fecha: \\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2} - Se modificó el aula 118 a aula 205 - .*(\\n)?$"), 
+                "El registro debería incluir un timestamp en formato correcto");
+                
         } catch (Exception e) {
-            fail("Error al verificar el registro: " + e.getMessage());
+            fail("Error al verificar el registro de integración: " + e.getMessage());
         }
     }
 } 

@@ -23,8 +23,9 @@ java {
 dependencies {
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
-    implementation 'com.github.gcajal:ClassRoom-Notifier:7c223db2a9'
+    implementation 'com.github.gcajal:ClassRoom-Notifier:41bf25ba20'
     implementation 'org.json:json:20231013'
+    testImplementation 'org.mockito:mockito-core:5.10.0'
 }
 
 test {

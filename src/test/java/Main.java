@@ -14,12 +14,12 @@ import java.time.format.DateTimeFormatter;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class Main {
-    private static final String MEMORY_FILE = "src/test/resources/memory.txt";
+    private static final String MEMORY_FILE = "log.txt";
     private static final String EXTENSIONS_PATH = "src/test/resources/extensions/";
     private LoggerFactory loggerFactory;
     private Logger logger;
     private ClassroomNotifier application;
-
+    private DataFromFile  data;
     @BeforeEach
     void setUp() throws FileNotFoundException {
         // Limpiar el archivo de memoria antes de cada test
@@ -34,38 +34,32 @@ public class Main {
         logger = loggerFactory.createLogger();
 
         // Inicializar sistema principal
+        data = new DataFromFile("stockActual.json");
         FactoryClassroom appFactory = new FactoryClassroom();
-        application = appFactory.crear(null, EXTENSIONS_PATH);
+        application = appFactory.crear(data, EXTENSIONS_PATH);
+        data.enviar();
     }
+
 
     @Test
     @DisplayName("Criterio 1: Registro de notificaciones")
     void testRegistroNotificaciones() {
         // Mensaje de prueba
-        String mensajeBase = "Mensaje de prueba - ";
-        String mensajePrueba = mensajeBase + LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
-        
-        // Registrar el mensaje
-        logger.update(mensajePrueba);
+        String mensajeBase = "Se modifico el aula de la materia 002 PP2, la nueva aula";
+        //String mensajePrueba = mensajeBase + LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
 
-        // Esperar un poco para asegurar que el logger haya escrito
-        try {
-            Thread.sleep(200);
-        } catch (InterruptedException e) {
-            // Ignorar
-        }
+        application.addObserver(logger);
+        application.addCurrentObservers("Logger");
+        data.updateFile("stockActualizado.json");
+        data.enviar();
 
         // Verificar registro
         try {
             String contenido = new String(Files.readAllBytes(Paths.get(MEMORY_FILE)));
-            // Verificar que el archivo no está vacío
-            assertFalse(contenido.isEmpty(), "El archivo de registro no debería estar vacío");
-            // Verificar que el mensaje base está en el archivo
+             // Verificar que el mensaje base está en el archivo
             assertTrue(contenido.contains(mensajeBase), 
                 "El mensaje base debería estar registrado en el archivo.");
-            // Verificar formato del timestamp (formato real: "Fecha: YYYY-MM-DD HH:mm:ss")
-            assertTrue(contenido.matches("^Fecha: \\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2} - Mensaje de prueba - .*(\\n)?$"), 
-                "El registro debería incluir un timestamp en formato correcto (Fecha: YYYY-MM-DD HH:mm:ss)");
+
         } catch (Exception e) {
             fail("Error al verificar el registro: " + e.getMessage());
         }

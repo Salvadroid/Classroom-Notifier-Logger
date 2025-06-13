@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="Main" tests="2" skipped="0" failures="0" errors="0" timestamp="2025-06-13T01:16:27.217Z" hostname="AR000F3W600X2CX" time="0.422">
+  <properties/>
+  <testcase name="Criterio 1: Registro de notificaciones" classname="Main" time="0.217"/>
+  <testcase name="Criterio 2: Logger no registrado como observer (caso negativo)" classname="Main" time="0.204"/>
+  <system-out><![CDATA[Logger received message: Mensaje de prueba - 2025-06-12T22:16:27.223759
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

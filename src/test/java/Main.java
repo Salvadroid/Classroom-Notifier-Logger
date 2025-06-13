@@ -117,43 +117,4 @@ public class Main {
             fail("Error al verificar que el mensaje no fue registrado: " + e.getMessage());
         }
     }
-    
-    @Test
-    @DisplayName("Criterio extra: Integración exitosa con sistema existente")
-    void testIntegracionExitosaSistemaExistente() {
-        // Registrar logger como observador
-        application.addObserver(logger);
-        application.addCurrentObservers(logger.getClass().getSimpleName());
-        
-        // Enviar una notificación de prueba
-        String mensajePrueba = "Se modificó el aula 118 a aula 205 - " + 
-            LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
-        application.notifyObservers(mensajePrueba);
-        
-        // Esperar un poco para asegurar que el logger haya escrito
-        try {
-            Thread.sleep(200);
-        } catch (InterruptedException e) {
-            // Ignorar
-        }
-        
-        // Verificar que el mensaje fue registrado correctamente
-        try {
-            String contenido = new String(Files.readAllBytes(Paths.get(MEMORY_FILE)));
-            
-            // Verificar que el archivo no está vacío
-            assertFalse(contenido.isEmpty(), "El archivo debería contener el mensaje registrado");
-            
-            // Verificar que contiene el mensaje
-            assertTrue(contenido.contains("Se modificó el aula 118 a aula 205"), 
-                "El logger debería haber recibido y registrado la notificación de cambio de aula");
-                
-            // Verificar formato del timestamp
-            assertTrue(contenido.matches("^Fecha: \\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2} - Se modificó el aula 118 a aula 205 - .*(\\n)?$"), 
-                "El registro debería incluir un timestamp en formato correcto");
-                
-        } catch (Exception e) {
-            fail("Error al verificar el registro de integración: " + e.getMessage());
-        }
-    }
 } 

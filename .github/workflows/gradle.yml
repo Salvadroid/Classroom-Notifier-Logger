@@ -1,0 +1,71 @@
+name: Java CI with Gradle
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    permissions:
+      checks: write
+      pull-requests: write
+      contents: read
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+
+    # Configure Gradle for optimal use in GitHub Actions, including caching of downloaded dependencies.
+    # See: https://github.com/gradle/actions/blob/main/setup-gradle/README.md
+    - name: Setup Gradle
+      uses: gradle/actions/setup-gradle@af1da67850ed9a4cedd57bfd976089dd991e2582 # v4.0.0
+
+    - name: Change wrapper permissions
+      run: chmod +x ./gradlew
+    - name: Build with Gradle Wrapper (compilar y testear)
+      run: ./gradlew build
+    
+    - name: Mostrar resumen de tests
+      uses: dorny/test-reporter@v1
+      if: always()
+      with:
+        name: Test Results
+        path: build/test-results/test/TEST-*.xml
+        reporter: java-junit
+
+    - name: Upload test reports
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: test-reports
+        path: |
+          build/test-results/test
+          build/reports/tests/test
+
+  dependency-submission:
+
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+
+    # Generates and submits a dependency graph, enabling Dependabot Alerts for all project dependencies.
+    # See: https://github.com/gradle/actions/blob/main/dependency-submission/README.md
+    - name: Generate and submit dependency graph
+      uses: gradle/actions/dependency-submission@af1da67850ed9a4cedd57bfd976089dd991e2582 # v4.0.0

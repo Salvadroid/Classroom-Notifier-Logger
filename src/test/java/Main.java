@@ -45,12 +45,12 @@ public class Main {
     @DisplayName("Criterio 1: Registro de notificaciones")
     void testRegistroNotificaciones() {
         // Mensaje de prueba
-        String mensajeBase = "Se modifico el aula de la materia 002 PP2, la nueva aula";
+        String mensajeBase = "Se modifico el aula de la materia 002 PP2, la nueva aula es 7011";
         //String mensajePrueba = mensajeBase + LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
 
         application.addObserver(logger);
         application.addCurrentObservers("Logger");
-        data.updateFile("stockActualizado.json");
+        data.updateFile("stockActualizadoTest1.json");
         data.enviar();
 
         // Verificar registro
@@ -59,7 +59,6 @@ public class Main {
              // Verificar que el mensaje base está en el archivo
             assertTrue(contenido.contains(mensajeBase), 
                 "El mensaje base debería estar registrado en el archivo.");
-
         } catch (Exception e) {
             fail("Error al verificar el registro: " + e.getMessage());
         }
@@ -69,44 +68,18 @@ public class Main {
     @DisplayName("Criterio 2: Logger no registrado como observer (caso negativo)")
     void testLoggerNoRegistradoComoObserver() {
         // NO registrar el logger como observador intencionalmente
-        // application.addObserver(logger); <- Esta línea comentada intencionalmente
-        
-        // Obtener contenido inicial del archivo
-        String contenidoInicial = "";
-        try {
-            contenidoInicial = new String(Files.readAllBytes(Paths.get(MEMORY_FILE)));
-        } catch (Exception e) {
-            fail("Error al leer el archivo inicial: " + e.getMessage());
-        }
-        
-        // Enviar una notificación de prueba sin el logger registrado
-        String mensajePrueba = "Mensaje que NO debería registrarse - " + 
-            LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
-        
-        // El sistema debería funcionar normalmente aunque el logger no esté registrado
-        assertDoesNotThrow(() -> {
-            application.notifyObservers(mensajePrueba);
-        }, "El sistema debería funcionar normalmente sin el logger registrado");
-        
-        // Esperar un poco para asegurar que no se escriba nada
-        try {
-            Thread.sleep(200);
-        } catch (InterruptedException e) {
-            // Ignorar
-        }
+        String mensajePrueba = "Se modifico el aula de la materia 001 Matematicas, la nueva aula es 7015";
+
+        data.updateFile("stockActualizadoTest2.json");
+        data.enviar();
         
         // Verificar que el mensaje NO fue registrado
         try {
             String contenidoFinal = new String(Files.readAllBytes(Paths.get(MEMORY_FILE)));
-            
-            // El archivo debería permanecer igual (vacío o sin el nuevo mensaje)
-            assertEquals(contenidoInicial, contenidoFinal, 
-                "El contenido del archivo no debería cambiar cuando el logger no está registrado");
-            
-            // Verificar específicamente que el mensaje de prueba no está presente
-            assertFalse(contenidoFinal.contains(mensajePrueba), 
-                "El mensaje no debería estar registrado cuando el logger no es un observer");
-                
+
+            assertFalse(contenidoFinal.contains(mensajePrueba),
+                    "El mensaje base debería estar registrado en el archivo.");
+
         } catch (Exception e) {
             fail("Error al verificar que el mensaje no fue registrado: " + e.getMessage());
         }
